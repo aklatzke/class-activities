@@ -15,21 +15,31 @@
     console.log("charIndexes & stripAtIndexes Results ---")
 
     let charIndexes = function ( s, chars ) {
+        // if chars isn't an array, create an array from it
         chars = Array.from(chars);
-        
+        // split the string into an arry
         let indexes = s.split("")
+                        // map the array, returning the index if the item exists, otherwise false
                         .map( (item, index) => chars.includes(item) ? index : false )
+                        // filter out the false values from the array, leaving only the indexes
                         .filter( item => item !== false ? true : false );
-
+        // return the string and indexes as a tuple
         return [s, indexes];
     }
 
     let stripAtIndexes = function( s, indexes ) {
+        // if s is an array, rewrite the arguments to pull
+        // the values from the tuple
         if( Array.isArray(s) ){
+            // es6 array destructuring allows us to capture the values
+            // from the array in a single statement
             [s, indexes] = s;
         }
-        
-        return s.split("").reduce( (curr, next, iter) => curr + (indexes.includes(iter) ? "" : next), "" )
+        // split the string into an array, and then 
+        return s.split("")
+                // if the iteration count is in the indexes array, add an empty string to our
+                // current value, otherwise add an empty string (essentially removing the character)
+                .reduce( (curr, next, iter) => curr + (indexes.includes(iter) ? "" : next), "" )
     }
 
     console.log( stripAtIndexes(charIndexes("red", "d")) ) // should equal "re"
@@ -46,12 +56,17 @@
     console.log("countIterationsToMax Results ---")
 
     let countIterationsToMax = function( n, max ){
+        // create an i and curr value to hold our current iteration as well as 
+        // our current additive number
         let i = 0;
         let curr = 0;
-        return (function acc(n){
+        // return a named function that can call itself until it's completed
+        return (function acc(){
             i++;
-            return (curr = curr + n) >= max ? [i, curr] : acc(n);
-        }(n))
+            // add the current number + our n value. If it is higher than our max
+            // return our [i, current] tuple, otherwise run the function again
+            return (curr = curr + n) >= max ? [i, curr] : acc();
+        }())
     }
     console.log( countIterationsToMax(2, 5) ); // should equal 3, 6
     console.log( countIterationsToMax(5, 25) ); // should equal 5, 25
@@ -68,20 +83,36 @@
     // use the ((n) => n + 10) callback above to check your work, this is equivalent to:
     // function(n){ return n + 10 }
     console.log("lazyMapper Results ---")
-
+    // define a function that takes a callback as an argument
     let lazyMapper = function (cb) {
+        // define the array that will serve as our data store
+        // because it is defined outside of the returned function,
+        // it will keep its state as it will be the variable in scope
+        // for the function
         let arr = [];
+        // return a function that will do the actual queueing
         return val => {
+            // push the return value of the function after being
+            // applied to the passed val argument into the arr
             arr.push(cb(val))
+            // return the arr to return all of the values that have been
+            // passed in with the cb applied
             return arr;
         }
     }
-
+    // create an instance of the lazyMapper
     let myQueue = lazyMapper(n => n + 10);
-
+    // call the lazyMapper, adding arguments to its queue and logging everything that has been added
     console.log( myQueue(5) )
     console.log( myQueue(10) )
     console.log( myQueue(3) )   
+    // create another instance of the lazyMapper, this one that takes an object and returns
+    // the name, concatted into a string
+    let myHelloQueue = lazyMapper( obj => "Hello " + obj.name + "!" );
+
+    console.log( myHelloQueue( { name : "Andrew" } ) )
+    console.log( myHelloQueue( { name : "Bill Pullman" } ) )
+    console.log( myHelloQueue( { name : "Bill Paxton" } ) )
     // Complete the function below to create a staircase.
     // A staircase of sum n = 4 would look like:
     //    #
@@ -92,10 +123,19 @@
     console.log("staircase Results ---")
 
     let staircase = function( n ){
+        // create a string and a counter as we'll need both
         let staircase = "";
         let i = 0;
+        // return a named function that can be called recursively
         return (function acc(){
+            // add the following to the staircase string:
+            // - an empty string repeated to n - i value, to create the empty space as
+            //   this will get smaller as the staircase grows
+            // - "#" repeated n times, to fill the actual staircase steps
+            // - \n to add a newline to the console
             staircase += " ".repeat(n - (++i)) + "#".repeat(i) + "\n";
+            // if our i value equals our n value (max) return the staircase
+            // otherwise - recurse!
             return i === n ? staircase : acc();
         }())
     }
@@ -112,13 +152,24 @@
     console.log("minMax Results ---")
 
     let minMax = function( arr ) { 
+        // This array is going to hold all of the calculated values
         let calcValues = [];
+        // Loop over each item of our array
         arr.forEach((item, index) => {
+            // create a copy of the array. We cannot just do 
+            // let arrCopy = arr because arrays are pass by reference and this
+            // would change the initial array, so we create a new copy with .concat()
             let arrCopy = [].concat(arr);
+            // set the current index of the arrCopy to 0. What this does is allow us to
+            // reduce the entire arrCopy to get a total value. Since we've set the index we're
+            // currently on to 0, we've essentially removed that value. Since we're looping,
+            // each of the iterations will remove a single number which solves the problem.
             arrCopy[index] = 0;
+            // push the reduced value into the calcValues array
             calcValues.push( arrCopy.reduce( ((curr, next) => curr + next), 0 ) );
         })
-
+        // return the tuple of the min and max value. We're using the spread operator
+        // here to push our calc values out into the proper format for Math.min and Math.max
         return [ Math.min(...calcValues), Math.max(...calcValues) ]
     }
 

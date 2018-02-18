@@ -56,6 +56,12 @@
     console.log( myQueue(10) ) // should return 15, 20
     console.log( myQueue(3) ) // should return 15, 20, 13
 
+    let myHelloQueue = lazyMapper( obj => "Hello " + obj.name + "!" );
+
+    console.log( myHelloQueue( { name : "Andrew" } ) ) // should return ["Hello Andrew!"]
+    console.log( myHelloQueue( { name : "Bill Pullman" } ) ) // should return ["Hello Andrew!", "Hello Bill Pullman!"]
+    console.log( myHelloQueue( { name : "Bill Paxton" } ) ) // should return ["Hello Andrew!", "Hello Bill Pullman!", "Hello Bill Paxton!"]
+
     // Complete the function below to create a staircase.
     // A staircase of sum n = 4 would look like:
     //    #
