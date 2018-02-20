@@ -3,21 +3,24 @@
 (function(){
     // Complete the following two functions such that:
     // - charIndexes takes a string and a character (or array of characters) and returns the indexes of 
-    //   each character's position in the string
-    // - stripIndexes takes a string and the indexes from charIndexes to return a string without
+    //   each character's position in the string and the string itself as a tuple
+    // - stripIndexes takes a tuple from charIndexes to return a string without
     //   those characters at the specified indexes
     // e.g.
     // stripAtIndexes( charIndexes( "marshmallow", ["m", "l"] ) )
     // returns "arshaow"
+    // stripAtIndexes should be able to take EITHER a tuple or two arguments, for example:
+    // stripAtIndexes("red", [0, 1]) // "d"
+    // stripAtIndexes(["red", [0, 2]]) // "e"
     console.log("charIndexes & stripAtIndexes Results ---")
 
     let charIndexes = function(){}
     let stripAtIndexes = function(){}
 
-    console.log( charIndexes(stripAtIndexes("red", "d")) ) // should equal "re"
-    console.log( charIndexes(stripAtIndexes("marshmallow", ["m", "l"])) ) // should equal "arshaow"
+    console.log( stripAtIndexes(charIndexes("red", "d")) ) // should equal "re"
+    console.log( stripAtIndexes(charIndexes("marshmallow", ["m", "l"])) ) // should equal "arshaow"
     console.log( stripAtIndexes("red", [0, 1]) ) // should equal "d"
-    console.log( stripAtIndexes("red", [0, 2]) ) // should equal "e"    
+    console.log( stripAtIndexes("red", [0, 2]) ) // should equal "e"   
 
     // Write a recursive function that does the following:
     // - Takes two arguments, an iteration value and a max value
