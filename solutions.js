@@ -17,7 +17,7 @@
     let charIndexes = function ( s, chars ) {
         // if chars isn't an array, create an array from it
         chars = Array.from(chars);
-        // split the string into an arry
+        // split the string into an array
         let indexes = s.split("")
                         // map the array, returning the index if the item exists, otherwise false
                         .map( (item, index) => chars.includes(item) ? index : false )
@@ -37,7 +37,7 @@
         }
         // split the string into an array, and then 
         return s.split("")
-                // if the iteration count is in the indexes array, add an empty string to our
+                // if the iteration count is in the indexes array, add the character to our
                 // current value, otherwise add an empty string (essentially removing the character)
                 .reduce( (curr, next, iter) => curr + (indexes.includes(iter) ? "" : next), "" )
     }
